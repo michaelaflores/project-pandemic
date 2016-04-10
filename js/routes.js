@@ -14,7 +14,7 @@ pandemic.config(function($routeProvider) {
     		controller: 'MyCtrl2'
     	});
     $routeProvider.otherwise(
-        {
-            redirectTo: '/view1'
-        });
+      {
+        redirectTo: '/view1'
+      });
 });

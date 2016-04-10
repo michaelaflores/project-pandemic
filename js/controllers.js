@@ -8,5 +8,3 @@ pandemic.controller("MyCtrl1" ,function ($scope, UtilSrvc) {
 pandemic.controller("MyCtrl2" ,function ($scope) {
 
 });
-
-// you may add more controllers below
