@@ -6,9 +6,6 @@
   "scripts": {
     "start": "node index.js"
   },
-  "dependencies": {
-    "angularjs": "1.5.3"
-  },
   "engines": {
     "node": "0.12.7"
   },
