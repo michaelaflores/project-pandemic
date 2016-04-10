@@ -1,6 +1,6 @@
 "use strict";
 
-myApp.directive('inputtext', function ($timeout) {
+pandemic.directive('inputtext', function ($timeout) {
     return {
         restrict:'E',
         replace:true,
@@ -14,7 +14,7 @@ myApp.directive('inputtext', function ($timeout) {
     }
 });
 
-myApp.directive('version', function(version) {
+pandemic.directive('version', function(version) {
   return function(scope, elm, attrs) {
     elm.text(version);
   };

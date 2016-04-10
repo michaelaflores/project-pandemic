@@ -1,13 +1,6 @@
 'use strict';
 
-var myApp = angular.module('myApp', [
-  'ngRoute',
-  'ngAnimate',
-  'ngSanitize',
-  'ngCookies'
-]);
-
-myApp.config(function($routeProvider) {
+pandemic.config(function($routeProvider) {
     $routeProvider.when(
     	'/view1',
     	{
