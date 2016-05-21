@@ -5,7 +5,7 @@ pandemic.config(function($routeProvider) {
     	'/view1',
     	{
     		templateUrl: 'partials/partial1.html',
-    		controller: 'CanvasCtrl'
+    		controller: 'NodeCtrl'
     	});
     $routeProvider.otherwise(
       {

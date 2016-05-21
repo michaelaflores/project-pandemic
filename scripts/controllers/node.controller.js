@@ -1,9 +1,9 @@
 'use strict';
 
 pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc) {
+  var canvas = document.getElementById("myCanvas");
+  var ctx = canvas.getContext("2d");
 
-  var randomx = Math.floor(Math.random()* canvas.width)
-  var randomy = Math.floor(Math.random()* canvas.height)
   var dx = Math.floor((Math.random() * Math.random()) - Math.random());
   var dy = Math.floor((Math.random() * Math.random()) - Math.random());
   var w = canvas.width;
@@ -13,11 +13,13 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc) {
   var speedY = 10;
 
   function createNode() {
-      ctx.beginPath();
-      ctx.arc(randomx, randomy, nodeRadius, 0, Math.PI*2);
-      ctx.fillStyle = "#0095DD";
-      ctx.fill();
-      ctx.closePath();
+    var randomx = Math.floor(Math.random()* canvas.width);
+    var randomy = Math.floor(Math.random()* canvas.height);  
+    ctx.beginPath();
+    ctx.arc(randomx, randomy, nodeRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
   }
 
   // test
