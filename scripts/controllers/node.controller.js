@@ -91,5 +91,34 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     });
   }
 
+  // Hash map creation
+    var width = 850;
+    var height = 500;
+    var gridSize = 10;
+    var yCellSize = height / gridSize;
+    var xCellSize = width / gridSize;
+    var idCounter = 0;
+
+    var gridArray = [];
+
+    var addGridCell = function(boxId, yStart, yEnd, xStart, xEnd) {
+      var gridCell = {};
+      gridCell.boxId = idCounter;
+      gridCell.yStart = yStart;
+      gridCell.yEnd = yEnd;
+      gridCell.xStart = xStart;
+      gridCell.xEnd = xEnd;
+      gridArray.push(gridCell);
+    }
+
+    for (var yPixel = 0; yPixel < height; yPixel += yCellSize) {
+      for (var xPixel = 0; xPixel < width; xPixel += xCellSize) {
+        var nextY = yPixel + yCellSize;
+        var nextX = xPixel + xCellSize;
+        addGridCell(idCounter, yPixel, nextY, xPixel, nextX);
+        idCounter++;
+      }
+    }
+
   setInterval(draw, 32);
 });
