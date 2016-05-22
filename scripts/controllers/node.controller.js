@@ -59,11 +59,12 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
   }
 
   function draw(nodesToCreate) {
-    console.log();
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
-    if (nodesToCreate == null)
-      nodesToCreate = 1;
+    if (nodesToCreate == null) {
+      nodesToCreate = 50;
+    }
+
       // Background
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, w, h);
@@ -78,10 +79,9 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
       }
 
       angular.forEach(nodesArray, function(value, key) {
-        console.log('rendering after init');
         changeDirection(value);
       });
   }
 
-  setInterval(draw, 1000);
+  setInterval(draw, 32);
 });

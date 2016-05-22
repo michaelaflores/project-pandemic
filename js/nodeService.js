@@ -21,9 +21,8 @@ function nodeService($log) {
       var randomSpeed = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
       var randomFactor = 8;
       nodesArray.push(new Node(status, randomSpeed, randomFactor));
-      console.log(nodesArray);
-      return nodesArray;
     }
+    return nodesArray;
   }
 
     // placeholder
