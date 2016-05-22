@@ -1,15 +1,22 @@
 'use strict';
 
-pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
+pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
   var initialized = false;
   var w = canvas.width;
   var h = canvas.height;
+  var collArray = [];
+  var gridArray = [];
   var nodeRadius = 7;
   var nodesArray = [];
   var speedX = 10;
   var speedY = 10;
+
+  // utility extensions
+  Number.prototype.between = function (min, max) {
+    return this > min && this < max;
+  };
 
   function createNode(nodeObject) {
     var randomx = Math.floor(Math.random()* canvas.width);
@@ -66,6 +73,14 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     ctx.closePath();
   }
 
+  function detectBox(node) {
+    angular.forEach(gridArray, function(value, key) {
+      if (node.x.between(value.xStart, value.xEnd) && node.y.between(value.yStart, value.yEnd)) {
+        node.inBox = value.boxId;
+      }
+    });
+  }
+
   function detectCollision(node1, node2) {
     var dx = node1.x - node2.x;
     var dy = node2.y - node2.y;
@@ -93,23 +108,37 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
       angular.forEach(nodesArray, function(value, key) {
         createNode(value);
       });
+      createSpatial();
       initialized = true;
     }
 
     angular.forEach(nodesArray, function(value, key) {
+      detectBox(value);
       changeDirection(value);
     });
+
+    angular.forEach(gridArray, function(gridVal, gridKey) {
+      collArray[gridKey] = {
+        id: gridVal.boxId,
+        nodes: []
+      };
+      angular.forEach(nodesArray, function(nodeVal, nodeKey) {
+        if (gridVal.boxId == nodeVal.inBox) {
+          collArray[gridKey].nodes.push(nodeVal);
+        }
+      });
+    });
+
   }
 
-  // Hash map creation
+  function createSpatial() {
     var width = 850;
     var height = 500;
     var gridSize = 10;
     var yCellSize = height / gridSize;
     var xCellSize = width / gridSize;
     var idCounter = 0;
-
-    var gridArray = [];
+    gridArray = [];
 
     var addGridCell = function(boxId, yStart, yEnd, xStart, xEnd) {
       var gridCell = {};
@@ -129,6 +158,7 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
         idCounter++;
       }
     }
+  }
 
-  setInterval(draw, 32);
+  setInterval(draw, 1000);
 });
