@@ -16,7 +16,11 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     var randomy = Math.floor(Math.random()* canvas.height);
     ctx.beginPath();
     ctx.arc(randomx, randomy, nodeRadius, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
+    if (nodeObject.status == 1) {
+      ctx.fillStyle = "#e55c50";
+    } else {
+      ctx.fillStyle = "#0095DD";
+    }
     ctx.fill();
     ctx.closePath();
     nodeObject.x = randomx;
@@ -53,7 +57,11 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     node.y = dy;
     ctx.beginPath();
     ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
+    if (node.status == 1) {
+      ctx.fillStyle = "#e55c50";
+    } else {
+      ctx.fillStyle = "#0095DD";
+    }
     ctx.fill();
     ctx.closePath();
   }
@@ -65,22 +73,22 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
       nodesToCreate = 50;
     }
 
-      // Background
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, w, h);
+    // Background
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, w, h);
 
-      // Node creation
-      if (!initialized) {
-        nodesArray = nodeService.createNodes(nodesToCreate);
-        angular.forEach(nodesArray, function(value, key) {
-          createNode(value);
-        });
-        initialized = true;
-      }
-
+    // Node creation
+    if (!initialized) {
+      nodesArray = nodeService.createNodes(nodesToCreate, 10);
       angular.forEach(nodesArray, function(value, key) {
-        changeDirection(value);
+        createNode(value);
       });
+      initialized = true;
+    }
+
+    angular.forEach(nodesArray, function(value, key) {
+      changeDirection(value);
+    });
   }
 
   setInterval(draw, 32);

@@ -13,11 +13,13 @@ function nodeService($log) {
     var infectedCreated = 0;
     for (var num = 0; num <= numberToCreate; num++) {
       var status;
-      // if (infectedCreated < initialInfectedCount) {
+      if (infectedCreated < initialInfectedCount) {
+        console.log('added zombie');
         status = 1;
-      // } else {
-      //   status = 0;
-      // }
+        infectedCreated++;
+      } else {
+        status = 0;
+      }
       var randomSpeed = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
       var randomFactor = 8;
       nodesArray.push(new Node(status, randomSpeed, randomFactor));
@@ -42,7 +44,6 @@ function nodeService($log) {
       this.factor = factor;
       this.x;
       this.y;
-      console.log(this);
-      return(this);
+      return this;
     }
   }
