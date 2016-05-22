@@ -22,7 +22,7 @@ function nodeService($log) {
       }
       var randomSpeed = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
       var randomFactor = 8;
-      nodesArray.push(new Node(status, randomSpeed, randomFactor));
+      nodesArray.push(new Node(status, randomSpeed, randomFactor, num));
     }
     return nodesArray;
   }
@@ -38,7 +38,8 @@ function nodeService($log) {
     }
 
     // constructor function for Node objects
-    function Node(status, speed, factor) {
+    function Node(status, speed, factor, id) {
+      this.id = id;
       this.status = status;
       this.speed = speed;
       this.factor = factor;
