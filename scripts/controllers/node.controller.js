@@ -66,6 +66,16 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     ctx.closePath();
   }
 
+  function detectCollision(node1, node2) {
+    var dx = node1.x - node2.x;
+    var dy = node2.y - node2.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < node1.radius + node2.radius) {
+      console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+    }
+  }
+
   function draw(nodesToCreate) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
