@@ -3,12 +3,11 @@
 pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
-
-  var dx = Math.floor((Math.random() * Math.random()) - Math.random());
-  var dy = Math.floor((Math.random() * Math.random()) - Math.random());
+  var initialized = false;
   var w = canvas.width;
   var h = canvas.height;
   var nodeRadius = 7;
+  var nodesArray = [];
   var speedX = 10;
   var speedY = 10;
 
@@ -20,22 +19,49 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
+    nodeObject.x = randomx;
+    nodeObject.y = randomy;
   }
 
-  // test
-  function changeDirection() {
-    var me = this;
-    var speedX = 1;
-    var speedY = 1;
+  function changeDirection(node) {
+    var dx = node.x;
+    var dy = node.y;
+    var randomx = Math.floor(Math.random() * 201) - 100;
+    var randomy = Math.floor(Math.random() * 201) - 100;
+    if (randomx > 0) {
+      randomx = 1;
+    } else {
+      randomx = -1;
+    }
+    if (randomy > 0) {
+      randomy = 1;
+    } else {
+      randomy = -1;
+    }
+    // bounds
+    if (randomx + dx > canvas.width-nodeRadius || randomx + dx < nodeRadius) {
+        dx = -dx;
+    }
+    if (randomy + dy > canvas.height-nodeRadius || randomy + dy < nodeRadius) {
+        dy = -dy;
+    }
 
-    var time = 1000 + 2000*Math.random();
-    setTimeout(function() {me.changeDirection()}, time);
+    // Movement
+    dx += randomx;
+    dy += randomy;
+    node.x = dx;
+    node.y = dy;
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
   }
 
   function draw(nodesToCreate) {
-    var randomx = 1;
-    var randomy = 1;
+    console.log();
     var nodesToCreate = nodesToCreate;
+    var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null)
       nodesToCreate = 1;
       // Background
@@ -43,25 +69,18 @@ pandemic.controller("NodeCtrl" ,function ($scope, UtilSrvc, nodeService) {
       ctx.fillRect(0, 0, w, h);
 
       // Node creation
-      var nodesArray = nodeService.createNodes(nodesToCreate);
+      if (!initialized) {
+        nodesArray = nodeService.createNodes(nodesToCreate);
+        angular.forEach(nodesArray, function(value, key) {
+          createNode(value);
+        });
+        initialized = true;
+      }
+
       angular.forEach(nodesArray, function(value, key) {
-        createNode(value);
+        console.log('rendering after init');
+        changeDirection(value);
       });
-
-      // bounds
-      if(randomx + dx > canvas.width-nodeRadius || randomx + dx < nodeRadius) {
-          dx = -dx;
-      }
-      if(randomy + dy > canvas.height-nodeRadius || randomy + dy < nodeRadius) {
-          dy = -dy;
-      }
-
-      // Movement
-      randomx += dx;
-      randomy += dy;
-
-      // Change Direction
-
   }
 
   setInterval(draw, 1000);
