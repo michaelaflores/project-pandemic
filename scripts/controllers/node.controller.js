@@ -1,4 +1,4 @@
-'use strict';
+p'use strict';
 
 pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
@@ -34,14 +34,21 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     nodeObject.y = randomy;
   }
 
-  function infectNode(node.id) {
+  function infectNode(uninfectedNode, infectedNode) {
     // Should add baseStrength once we can initialize a random base on node creation for super nodes
-    // Random Disease Strength should eventually pull in the infecting nodes strength factor
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
 
-    if (randomDiseaseStrength > randomDiseaseResistance) {
-      node.status = 1;
+    if (uninfectedNode.factor == undefined) {
+      var uninfectedNode.factor = randomDiseaseResistance;
+    }
+
+    if (infectedNode.factor == undefined) {
+      var infectedNode.factor = randomDiseaseStrength;
+    }
+
+    if (infectedNode.factor > uninfectedNode.factor) {
+      uninfectedNode.status = 1;
     }
 
   }
