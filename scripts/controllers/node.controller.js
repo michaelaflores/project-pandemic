@@ -1,4 +1,4 @@
-p'use strict';
+'use strict';
 
 pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
@@ -40,11 +40,11 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
 
     if (uninfectedNode.factor == undefined) {
-      var uninfectedNode.factor = randomDiseaseResistance;
+      uninfectedNode.factor = randomDiseaseResistance;
     }
 
     if (infectedNode.factor == undefined) {
-      var infectedNode.factor = randomDiseaseStrength;
+      infectedNode.factor = randomDiseaseStrength;
     }
 
     if (infectedNode.factor > uninfectedNode.factor) {
