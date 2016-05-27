@@ -39,3 +39,30 @@ canvas {
   content: "";
   padding: 0;
 }
+
+.navbar {
+  color: white;
+  background-color: #E5E5E6;
+  top: 0;
+  height: 40px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.navbar h1{
+  text-align: center;
+}
+
+@media screen and (max-width: 850px) and (min-width: 650px) {
+  #myCanvas {
+    width: 650px;
+    height: 425px;
+  }
+}
+
+@media screen and (max-width: 650px) and (min-width: 400px) {
+  #myCanvas {
+    width: 550px;
+    height: 400px;
+  }
+}
