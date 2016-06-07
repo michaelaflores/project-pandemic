@@ -53,6 +53,20 @@ canvas {
   text-align: center;
 }
 
+.userInputSpeed {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.userInputSpeed button {
+  color: white;
+  width: 30px;
+}
+
+.userInputSpeed p {
+  display: inline;
+}
+
 @media screen and (max-width: 850px) and (min-width: 650px) {
   #myCanvas {
     width: 650px;
