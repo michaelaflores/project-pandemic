@@ -8,11 +8,42 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var h = canvas.height;
   var collArray = [];
   var gridArray = [];
-  var nodeRadius = 7;
+  var nodeRadius = 1.3;
   var nodesArray = [];
   var speedX = 10;
   var speedY = 10;
   var coll, gridfinished = false;
+  var speed = 3;
+
+  $scope.changeSpeedOne = changeSpeedOne;
+  function changeSpeedOne() {
+    speed = 1;
+    return speed;
+  }
+
+  $scope.changeSpeedTwo = changeSpeedTwo;
+  function changeSpeedTwo() {
+    speed = 2;
+    return speed;
+  }
+
+  $scope.changeSpeedThree = changeSpeedThree;
+  function changeSpeedThree() {
+    speed = 3;
+    return speed;
+  }
+
+  $scope.changeSpeedFour = changeSpeedFour;
+  function changeSpeedFour() {
+    speed = 4;
+    return speed;
+  }
+
+  $scope.changeSpeedFive = changeSpeedFive;
+  function changeSpeedFive() {
+    speed = 5;
+    return speed;
+  }
 
   // utility extensions
   Number.prototype.between = function (min, max) {
@@ -35,20 +66,39 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     nodeObject.y = randomy;
   }
 
+  function infectNode(uninfectedNode, infectedNode) {
+    // Should add baseStrength once we can initialize a random base on node creation for super nodes
+    var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
+    var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
+
+    if (uninfectedNode.factor == undefined) {
+      uninfectedNode.factor = randomDiseaseResistance;
+    }
+
+    if (infectedNode.factor == undefined) {
+      infectedNode.factor = randomDiseaseStrength;
+    }
+
+    if (infectedNode.factor > uninfectedNode.factor) {
+      uninfectedNode.status = 1;
+    }
+
+  }
+
   function changeDirection(node) {
     var dx = node.x;
     var dy = node.y;
     var randomx = Math.floor(Math.random() * 201) - 100;
     var randomy = Math.floor(Math.random() * 201) - 100;
     if (randomx > 0) {
-      randomx = 1;
+      randomx = speed;
     } else {
-      randomx = -1;
+      randomx = -speed;
     }
     if (randomy > 0) {
-      randomy = 1;
+      randomy = speed;
     } else {
-      randomy = -1;
+      randomy = -speed;
     }
     // bounds
     if (randomx + dx > canvas.width-nodeRadius || randomx + dx < nodeRadius) {
@@ -97,7 +147,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 50;
+      nodesToCreate = 500;
     }
 
     // Background
@@ -106,7 +156,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
     // Node creation
     if (!initialized) {
-      nodesArray = nodeService.createNodes(nodesToCreate, 10);
+      nodesArray = nodeService.createNodes(nodesToCreate, 100);
       angular.forEach(nodesArray, function(value, key) {
         createNode(value);
       });
@@ -183,5 +233,5 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     gridfinished = true;
   }
 
-  setInterval(draw, 1000);
+  setInterval(draw, 250);
 });

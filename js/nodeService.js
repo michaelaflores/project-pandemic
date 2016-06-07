@@ -20,7 +20,7 @@ function nodeService($log) {
       } else {
         status = 0;
       }
-      var randomSpeed = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+      var randomSpeed = Math.floor(Math.random() * (10 - 1)) + 1;
       var randomFactor = 8;
       nodesArray.push(new Node(status, randomSpeed, randomFactor, num));
     }
@@ -41,7 +41,7 @@ function nodeService($log) {
     function Node(status, speed, factor, id) {
       this.id = id;
       this.status = status;
-      this.speed = speed;
+      this.speed = Math.floor(Math.random() * (speed + 2)) + speed - 2  ;
       this.factor = factor;
       this.x;
       this.y;
