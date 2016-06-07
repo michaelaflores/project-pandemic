@@ -12,6 +12,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var nodesArray = [];
   var speedX = 10;
   var speedY = 10;
+  var coll, gridfinished = false;
 
   // utility extensions
   Number.prototype.between = function (min, max) {
@@ -82,6 +83,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   }
 
   function detectCollision(node1, node2) {
+    console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
     var dx = node1.x - node2.x;
     var dy = node2.y - node2.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
@@ -124,11 +126,29 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       };
       angular.forEach(nodesArray, function(nodeVal, nodeKey) {
         if (gridVal.boxId == nodeVal.inBox) {
+          if (!coll)
+            console.log('placing ' + nodeVal.id + ' in ' + gridVal.boxId);
           collArray[gridKey].nodes.push(nodeVal);
         }
       });
     });
+    if (!coll)
+      console.log(collArray);
+    coll = true;
 
+    angular.forEach(collArray, function(colVal, colKey) {
+      if (!coll)
+        console.log('in ' + colKey + ': ' + colVal);
+      angular.forEach(colVal.nodes, function(nodeVal, nodeKey) {
+        if (((nodeKey + 1) > colVal.nodes.length) || colVal.nodes.length == 1) {
+          //console.log('one in bucket at ' + colKey);
+          return;
+        }
+        var next = nodeKey + 1;
+        //console.log(collArray[colKey]);
+        detectCollision(collArray[colKey].nodes[nodeKey], collArray[colKey].nodes[next]);
+      });
+    });
   }
 
   function createSpatial() {
@@ -158,6 +178,9 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
         idCounter++;
       }
     }
+    if (!gridfinished)
+      console.log(gridArray);
+    gridfinished = true;
   }
 
   setInterval(draw, 1000);
