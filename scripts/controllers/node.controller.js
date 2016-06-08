@@ -132,14 +132,16 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
   function detectCollision(node1, node2) {
     // This stops logging after a certain amount
-    console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
-    var dx = node1.x - node2.x;
-    var dy = node2.y - node2.y;
-    // distance formula is wrong.
-    var distance = Math.sqrt(dx * dx + dy * dy);
-    // This needs to be fixed, never true
-    if (distance < node1.radius + node2.radius) {
-      console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+    // Only checking collision if one node is infected
+    if (node1.status === 1 || node2.status === 1) {
+      console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
+      var dx = node1.x - node2.x;
+      var dy = node1.y - node2.y;
+      var distance = Math.hypot(node2.x-node1.x, node2.y-node1.y);
+      // This needs to be fixed, never true
+      if (distance < nodeRadius + nodeRadius) {
+        console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+      }
     }
   }
 
@@ -147,7 +149,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 200;
+      nodesToCreate = 20;
     }
 
     // Background
@@ -156,7 +158,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
     // Node creation
     if (!initialized) {
-      nodesArray = nodeService.createNodes(nodesToCreate, 100);
+      nodesArray = nodeService.createNodes(nodesToCreate, 10);
       angular.forEach(nodesArray, function(value, key) {
         createNode(value);
       });
@@ -164,6 +166,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       initialized = true;
     }
 
+    // This is causing a doubling
     angular.forEach(nodesArray, function(value, key) {
       detectBox(value);
       changeDirection(value);
