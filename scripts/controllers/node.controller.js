@@ -10,8 +10,6 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var gridArray = [];
   var nodeRadius = 1.3;
   var nodesArray = [];
-  var speedX = 10;
-  var speedY = 10;
   var coll, gridfinished = false;
   var speed = 3;
 
@@ -133,11 +131,13 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   }
 
   function detectCollision(node1, node2) {
+    // This stops logging after a certain amount
     console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
     var dx = node1.x - node2.x;
     var dy = node2.y - node2.y;
+    // distance formula is wrong.
     var distance = Math.sqrt(dx * dx + dy * dy);
-
+    // This needs to be fixed, never true
     if (distance < node1.radius + node2.radius) {
       console.log('collision between node ' + node1.id + ' and node ' + node2.id);
     }
@@ -147,7 +147,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 500;
+      nodesToCreate = 200;
     }
 
     // Background
@@ -177,7 +177,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       angular.forEach(nodesArray, function(nodeVal, nodeKey) {
         if (gridVal.boxId == nodeVal.inBox) {
           if (!coll)
-            console.log('placing ' + nodeVal.id + ' in ' + gridVal.boxId);
+            // console.log('placing ' + nodeVal.id + ' in ' + gridVal.boxId);
           collArray[gridKey].nodes.push(nodeVal);
         }
       });
@@ -190,8 +190,8 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       if (!coll)
         console.log('in ' + colKey + ': ' + colVal);
       angular.forEach(colVal.nodes, function(nodeVal, nodeKey) {
-        if (((nodeKey + 1) > colVal.nodes.length) || colVal.nodes.length == 1) {
-          //console.log('one in bucket at ' + colKey);
+        if (((nodeKey + 1) > (colVal.nodes.length - 1)) || colVal.nodes.length == 1) {
+          // console.log('one in bucket at ' + colKey);
           return;
         }
         var next = nodeKey + 1;
@@ -229,7 +229,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       }
     }
     if (!gridfinished)
-      console.log(gridArray);
+      // console.log(gridArray);
     gridfinished = true;
   }
 

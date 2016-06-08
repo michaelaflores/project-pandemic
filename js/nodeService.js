@@ -10,8 +10,7 @@ function nodeService($log) {
   function createNodes(numberToCreate, initialInfectedCount, averageInfectionFactor,
     averageResistanceFactor, averageInfectedSpeed, averageNormalSpeed) {
     var nodesArray = [];
-    var infectedCreated = 0;
-    for (var num = 0; num <= numberToCreate; num++) {
+    for (var num = 0, infectedCreated = 0; num <= numberToCreate; num++) {
       var status;
       if (infectedCreated < initialInfectedCount) {
         console.log('added zombie');
