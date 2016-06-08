@@ -69,16 +69,18 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
 
-    if (uninfectedNode.factor == undefined) {
+    if (uninfectedNode.factor === undefined) {
       uninfectedNode.factor = randomDiseaseResistance;
     }
 
-    if (infectedNode.factor == undefined) {
+    if (infectedNode.factor === undefined) {
       infectedNode.factor = randomDiseaseStrength;
     }
 
     if (infectedNode.factor > uninfectedNode.factor) {
       uninfectedNode.status = 1;
+      infectedNode.status = 1;
+      console.log("Node has been infected! :)");
     }
 
   }
@@ -137,10 +139,11 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
       var dx = node1.x - node2.x;
       var dy = node1.y - node2.y;
-      var distance = Math.hypot(node2.x-node1.x, node2.y-node1.y);
+      var distance = Math.hypot((node2.x-node1.x, node2.y-node1.y)/2);
       // This needs to be fixed, never true
       if (distance < nodeRadius + nodeRadius) {
         console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+        infectNode(node1, node2);
       }
     }
   }
@@ -149,7 +152,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 20;
+      nodesToCreate = 50;
     }
 
     // Background
