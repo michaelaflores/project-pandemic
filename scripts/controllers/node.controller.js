@@ -13,33 +13,9 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var coll, gridfinished = false;
   var speed = 3;
 
-  $scope.changeSpeedOne = changeSpeedOne;
-  function changeSpeedOne() {
-    speed = 1;
-    return speed;
-  }
-
-  $scope.changeSpeedTwo = changeSpeedTwo;
-  function changeSpeedTwo() {
-    speed = 2;
-    return speed;
-  }
-
-  $scope.changeSpeedThree = changeSpeedThree;
-  function changeSpeedThree() {
-    speed = 3;
-    return speed;
-  }
-
-  $scope.changeSpeedFour = changeSpeedFour;
-  function changeSpeedFour() {
-    speed = 4;
-    return speed;
-  }
-
-  $scope.changeSpeedFive = changeSpeedFive;
-  function changeSpeedFive() {
-    speed = 5;
+  $scope.changeSpeed = changeSpeed;
+  function changeSpeed(newSpeed) {
+    speed = newSpeed;
     return speed;
   }
 
