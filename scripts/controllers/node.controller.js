@@ -1,5 +1,8 @@
 'use strict';
 
+// Issues: doubles are printing to the screen at the start
+//
+
 pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
@@ -8,7 +11,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var h = canvas.height;
   var collArray = [];
   var gridArray = [];
-  var nodeRadius = 1.3;
+  var nodeRadius = 2;
   var nodesArray = [];
   var coll, gridfinished = false;
   var speed = 3;
@@ -40,7 +43,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     nodeObject.y = randomy;
   }
 
-  function infectNode(uninfectedNode, infectedNode) {
+  function infectNode(infectedNode, uninfectedNode) {
     // Should add baseStrength once we can initialize a random base on node creation for super nodes
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
@@ -56,9 +59,14 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     if (infectedNode.factor > uninfectedNode.factor) {
       uninfectedNode.status = 1;
       infectedNode.status = 1;
+      changeColor(infectedNode);
+      changeColor(uninfectedNode);
       console.log("Node has been infected! :)");
     }
+  }
 
+  var changeColor = function (node) {
+    node.fillStyle = "#e55c50";
   }
 
   function changeDirection(node) {
@@ -110,15 +118,16 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
   function detectCollision(node1, node2) {
     // This stops logging after a certain amount
+
     // Only checking collision if one node is infected
     if (node1.status === 1 || node2.status === 1) {
-      console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
+      // console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
       var dx = node1.x - node2.x;
       var dy = node1.y - node2.y;
-      var distance = Math.hypot((node2.x-node1.x, node2.y-node1.y)/2);
+      var distance = Math.hypot((node2.x - node1.x, node2.y - node1.y)/2);
       // This needs to be fixed, never true
-      if (distance < nodeRadius + nodeRadius) {
-        console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+      if (distance < nodeRadius * 2) {
+        // console.log('collision between node ' + node1.id + ' and node ' + node2.id);
         infectNode(node1, node2);
       }
     }
@@ -128,7 +137,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 50;
+      nodesToCreate = 1000;
     }
 
     // Background
@@ -165,20 +174,22 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       });
     });
     if (!coll)
-      console.log(collArray);
+      // console.log(collArray);
     coll = true;
 
     angular.forEach(collArray, function(colVal, colKey) {
       if (!coll)
         console.log('in ' + colKey + ': ' + colVal);
       angular.forEach(colVal.nodes, function(nodeVal, nodeKey) {
-        if (((nodeKey + 1) > (colVal.nodes.length - 1)) || colVal.nodes.length == 1) {
-          // console.log('one in bucket at ' + colKey);
+        if (colVal.nodes.length < 2) {
+          console.log(colVal.nodes)
+          console.log('Only one in bucket at ' + colKey);
           return;
         }
-        var next = nodeKey + 1;
-        //console.log(collArray[colKey]);
-        detectCollision(collArray[colKey].nodes[nodeKey], collArray[colKey].nodes[next]);
+        // console.log(collArray[colKey].nodes);
+        for (var i = 0; i < collArray[colKey].nodes.length - 1; i++) {
+          detectCollision(collArray[colKey].nodes[i], collArray[colKey].nodes[i+1]);
+        }
       });
     });
   }
