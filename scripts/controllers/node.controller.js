@@ -16,16 +16,19 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var coll, gridfinished = false;
   var speed = 3;
 
-  $scope.changeSpeed = changeSpeed;
-  function changeSpeed(newSpeed) {
-    speed = newSpeed;
-    return speed;
-  }
-
   // utility extensions
   Number.prototype.between = function (min, max) {
     return this > min && this < max;
   };
+
+  function changeColor(node) {
+    node.fillStyle = "#e55c50";
+  }
+
+  function changeSpeed(newSpeed) {
+    speed = newSpeed;
+    return speed;
+  }
 
   function createNode(nodeObject) {
     var randomx = Math.floor(Math.random()* canvas.width);
@@ -63,10 +66,6 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       changeColor(uninfectedNode);
       console.log("Node has been infected! :)");
     }
-  }
-
-  var changeColor = function (node) {
-    node.fillStyle = "#e55c50";
   }
 
   function changeDirection(node) {
