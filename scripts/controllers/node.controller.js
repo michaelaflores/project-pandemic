@@ -9,12 +9,14 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var initialized = false;
   var w = canvas.width;
   var h = canvas.height;
+  var counting = 0;
   var collArray = [];
   var gridArray = [];
   var nodeRadius = 2;
   var nodesArray = [];
   var coll, gridfinished = false;
   var speed = 3;
+  var count = 0;
 
   $scope.changeSpeed = changeSpeed;
   function changeSpeed(newSpeed) {
@@ -32,7 +34,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     var randomy = Math.floor(Math.random()* canvas.height);
     ctx.beginPath();
     ctx.arc(randomx, randomy, nodeRadius, 0, Math.PI*2);
-    if (nodeObject.status == 1) {
+    if (nodeObject.status === 1) {
       ctx.fillStyle = "#e55c50";
     } else {
       ctx.fillStyle = "#0095DD";
@@ -43,30 +45,18 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     nodeObject.y = randomy;
   }
 
-  function infectNode(infectedNode, uninfectedNode) {
+  function infectNode (infectedNode, uninfectedNode) {
     // Should add baseStrength once we can initialize a random base on node creation for super nodes
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
 
-    if (uninfectedNode.factor === undefined) {
-      uninfectedNode.factor = randomDiseaseResistance;
-    }
-
-    if (infectedNode.factor === undefined) {
-      infectedNode.factor = randomDiseaseStrength;
-    }
-
     if (infectedNode.factor > uninfectedNode.factor) {
       uninfectedNode.status = 1;
       infectedNode.status = 1;
-      changeColor(infectedNode);
-      changeColor(uninfectedNode);
+      infectedNode.fillStyle = "#e55c50";
+      uninfectedNode.fillStyle = "#e55c50";
       console.log("Node has been infected! :)");
     }
-  }
-
-  var changeColor = function (node) {
-    node.fillStyle = "#e55c50";
   }
 
   function changeDirection(node) {
@@ -118,26 +108,33 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
   function detectCollision(node1, node2) {
     // This stops logging after a certain amount
-
-    // Only checking collision if one node is infected
-    if (node1.status === 1 || node2.status === 1) {
+    if (node1.status === 1 && node2.status === 1) {
+      // console.log("Checked pair " + counting + " that were both infected");
+      counting++;
+      return;
+    } // Only checking collision if one node is infected
+    else if (node1.status === 1 || node2.status === 1) {
+      console.log("Good pair");
       // console.log('detecting collision on ' + node1.id + ' and ' + node2.id);
       var dx = node1.x - node2.x;
       var dy = node1.y - node2.y;
       var distance = Math.hypot((node2.x - node1.x, node2.y - node1.y)/2);
-      // This needs to be fixed, never true
       if (distance < nodeRadius * 2) {
-        // console.log('collision between node ' + node1.id + ' and node ' + node2.id);
+        console.log('collision between node ' + node1.id + ": " + node1.status + ' and node ' + node2.id + ": " + node2.status);
         infectNode(node1, node2);
       }
     }
   }
 
   function draw(nodesToCreate) {
+
+    // so I can definitely say the first parts of draw are correct at this point. up to and including the closure with detectBox() call
+
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
-      nodesToCreate = 1000;
+
+      nodesToCreate = 100;
     }
 
     // Background
@@ -146,7 +143,8 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
     // Node creation
     if (!initialized) {
-      nodesArray = nodeService.createNodes(nodesToCreate, 10);
+
+      nodesArray = nodeService.createNodes(nodesToCreate, 50);
       angular.forEach(nodesArray, function(value, key) {
         createNode(value);
       });
@@ -154,47 +152,63 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
       initialized = true;
     }
 
-    // This is causing a doubling
     angular.forEach(nodesArray, function(value, key) {
+
       detectBox(value);
+
       changeDirection(value);
     });
 
+    // Have hash table only be drawn once for optimization!! <3
     angular.forEach(gridArray, function(gridVal, gridKey) {
+
       collArray[gridKey] = {
         id: gridVal.boxId,
         nodes: []
       };
+
+      // Look through this. PS 170,000+ logs after a few seconds.
       angular.forEach(nodesArray, function(nodeVal, nodeKey) {
         if (gridVal.boxId == nodeVal.inBox) {
-          if (!coll)
+          if (!coll) {
+            // Never runs
             // console.log('placing ' + nodeVal.id + ' in ' + gridVal.boxId);
+          }
           collArray[gridKey].nodes.push(nodeVal);
         }
       });
     });
-    if (!coll)
-      // console.log(collArray);
+
     coll = true;
 
     angular.forEach(collArray, function(colVal, colKey) {
-      if (!coll)
-        console.log('in ' + colKey + ': ' + colVal);
+      // This continues to log
+      if (!coll) {
+        // This actually never logs
+        console.log(count);
+        count++;
+      }
+        // console.log('in ' + colKey + ': ' + colVal);
       angular.forEach(colVal.nodes, function(nodeVal, nodeKey) {
+        // Stops logging
         if (colVal.nodes.length < 2) {
-          console.log(colVal.nodes)
-          console.log('Only one in bucket at ' + colKey);
+          // Stops logging
+          // console.log(colVal.nodes)
+          // console.log('Only one in bucket at ' + colKey);
           return;
         }
         // console.log(collArray[colKey].nodes);
         for (var i = 0; i < collArray[colKey].nodes.length - 1; i++) {
+          // Stops logging
           detectCollision(collArray[colKey].nodes[i], collArray[colKey].nodes[i+1]);
         }
       });
     });
+
   }
 
   function createSpatial() {
+    console.log("spatial created")
     var width = 850;
     var height = 500;
     var gridSize = 10;
@@ -221,10 +235,11 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
         idCounter++;
       }
     }
-    if (!gridfinished)
-      // console.log(gridArray);
+    if (!gridfinished) {
+      console.log(gridArray);
+    }
     gridfinished = true;
   }
 
-  setInterval(draw, 250);
+  setInterval(draw, 500);
 });
