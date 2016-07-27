@@ -39,15 +39,13 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     } else {
       ctx.fillStyle = "#0095DD";
     }
-
     ctx.fill();
     ctx.closePath();
-
     nodeObject.x = randomx;
     nodeObject.y = randomy;
   }
 
-  var infectNode = function (infectedNode, uninfectedNode) {
+  function infectNode (infectedNode, uninfectedNode) {
     // Should add baseStrength once we can initialize a random base on node creation for super nodes
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
