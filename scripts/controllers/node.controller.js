@@ -1,8 +1,4 @@
 'use strict';
-
-// Issues: doubles are printing to the screen at the start
-//
-
 pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
@@ -45,7 +41,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     nodeObject.y = randomy;
   }
 
-  function infectNode (infectedNode, uninfectedNode) {
+  function infectNode(infectedNode, uninfectedNode) {
     // Should add baseStrength once we can initialize a random base on node creation for super nodes
     var randomDiseaseResistance = Math.floor(Math.random() * 10) - 9;
     var randomDiseaseStrength = Math.floor(Math.random() * 10) - 9;
@@ -127,9 +123,6 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   }
 
   function draw(nodesToCreate) {
-
-    // so I can definitely say the first parts of draw are correct at this point. up to and including the closure with detectBox() call
-
     var nodesToCreate = nodesToCreate;
     var time = 1000 + 2000 * Math.random();
     if (nodesToCreate == null) {
@@ -143,7 +136,6 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
 
     // Node creation
     if (!initialized) {
-
       nodesArray = nodeService.createNodes(nodesToCreate, 50);
       angular.forEach(nodesArray, function(value, key) {
         createNode(value);
@@ -153,15 +145,12 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     }
 
     angular.forEach(nodesArray, function(value, key) {
-
       detectBox(value);
-
       changeDirection(value);
     });
 
     // Have hash table only be drawn once for optimization!! <3
     angular.forEach(gridArray, function(gridVal, gridKey) {
-
       collArray[gridKey] = {
         id: gridVal.boxId,
         nodes: []
