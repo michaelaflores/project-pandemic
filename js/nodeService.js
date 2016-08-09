@@ -13,7 +13,6 @@ function nodeService($log) {
     for (var num = 0, infectedCreated = 0; num <= numberToCreate; num++) {
       var status;
       if (infectedCreated < initialInfectedCount) {
-        console.log('added zombie');
         status = 1;
         infectedCreated++;
       } else {
