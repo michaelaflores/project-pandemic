@@ -3,23 +3,119 @@
 * {
   padding: 0;
   margin: 0;
-  background-color: black;
+  color: white;
+}
+
+body {
+  background-color: #263238;
 }
 
 canvas {
   display: block;
   margin: 0 auto;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 13px;
+}
+
+a {
+    color: #0095DD;
+    text-decoration: none;
+}
+
+.md-title {
+  font-size: 17px;
+}
+
+.timer-title {
+  max-width: 120px;
 }
 
 .menu {
   list-style: none;
-  border-bottom: 0.1em solid black;
+  border-bottom: 0.1em solid white;
   margin-bottom: 2em;
   padding: 0 0 0.5em;
 }
 
+.md-fab {
+  background-color: #F44336;
+}
+
+.speed {
+  margin-top: 40px;
+  margin-left: 5%;
+  float: left;
+}
+
+.speed p {
+  margin-left: 10px;
+}
+
+.input-container {
+  text-align: center;
+  border-radius: 13px;
+}
+
+.bottom-input-container {
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.bottom-input-container input {
+  text-align: center;
+  border-radius: 5px;
+}
+
+.user-input-container {
+  text-align: center !important;
+  margin-top: 45px;
+  border-radius: 13px;
+}
+
+.stats {
+  margin-top: 60px;
+  background-color: #F44336;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 19px;
+  border-radius: 13px;
+  margin-left: 2%;
+  max-width: 150px;
+  margin-right: -70%;
+  max-height: 190px;
+}
+
+.infected {
+  background-color: #F44336;
+  font-size: 19px;
+  font-weight: bold;
+  max-width: 150px;
+}
+
+.seconds {
+  background-color: #F44336;
+  font-size: 19px;
+  font-weight: bold;
+}
+
 .menu:before {
   content: "[";
+}
+
+.github {
+  text-align: center;
+}
+
+.github-text {
+  color: white;
+}
+
+.icon {
+  fill: #0095DD;
+  size: 35px;
+  margin: 5px;
 }
 
 .menu:after {
@@ -42,23 +138,19 @@ canvas {
 
 .navbar {
   color: white;
-  background-color: #E5E5E6;
+  background-color: #263238;
   top: 0;
-  height: 40px;
+  height: 105px;
   width: 100%;
   margin-bottom: 50px;
 }
 
 .navbar h1{
   text-align: center;
+  padding-top: 40px;
 }
 
-.userInputSpeed {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.userInputSpeed button {
+.topStats button {
   color: white;
   width: 30px;
 }
@@ -67,16 +159,49 @@ canvas {
   display: inline;
 }
 
-@media screen and (max-width: 850px) and (min-width: 650px) {
+@media screen and (max-width: 1100px) and (min-width: 650px) {
   #myCanvas {
-    width: 650px;
+    width: 750px;
     height: 425px;
+  }
+
+  .speed p {
+    color: #F44336;
+    z-index: 10;
+  }
+
+  .md-display-3 {
+    font-size: 50px;
   }
 }
 
 @media screen and (max-width: 650px) and (min-width: 400px) {
   #myCanvas {
-    width: 550px;
-    height: 400px;
+    width: 500px;
+    height: 325px;
+  }
+
+  .speed p {
+    color: #F44336;
+    z-index: 10;
+  }
+
+  .hide-on-small {
+    display: block!important;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .md-display-3 {
+    font-size: 30px;
+  }
+
+  .seconds {
+    font-size: 14px;
+  }
+
+  .infected {
+    font-size: 14px;
   }
 }
