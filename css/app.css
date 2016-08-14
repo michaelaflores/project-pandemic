@@ -23,6 +23,11 @@ a {
     text-decoration: none;
 }
 
+.page-title {
+  display: inline-block;
+  text-align: center;
+}
+
 .md-title {
   font-size: 17px;
 }
@@ -70,7 +75,7 @@ a {
 
 .user-input-container {
   text-align: center !important;
-  margin-top: 45px;
+  margin-top: 25px;
   border-radius: 13px;
 }
 
@@ -105,11 +110,17 @@ a {
 }
 
 .github {
-  text-align: center;
+  margin: 10px;
 }
 
 .github-text {
   color: white;
+}
+
+.github-section {
+  float: right;
+  top: 0;
+  display: inline-block;
 }
 
 .icon {
@@ -140,6 +151,7 @@ a {
   color: white;
   background-color: #263238;
   top: 0;
+  text-align: center;
   height: 105px;
   width: 100%;
   margin-bottom: 50px;
