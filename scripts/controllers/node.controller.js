@@ -16,7 +16,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
   var timerVar = setInterval(countTimer, 1000);
   var totalSeconds = 0;
   $scope.startingInfectedCount = 10;
-  $scope.startingNodes = 5000;
+  $scope.startingNodes = 3000;
   $scope.changeSpeed = speed;
 
   // utility extensions
@@ -190,7 +190,7 @@ pandemic.controller("NodeCtrl" ,function($scope, UtilSrvc, nodeService) {
     // console.log("spatial created")
     var width = 850;
     var height = 500;
-    var gridSize = 10;
+    var gridSize = 5;
     var yCellSize = height / gridSize;
     var xCellSize = width / gridSize;
     var idCounter = 0;
